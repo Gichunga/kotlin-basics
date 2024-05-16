@@ -1,27 +1,29 @@
 class SmartTv(deviceName: String, category: String) : SmartDevice(deviceName = deviceName, category = category) {
-    private var speakerVolume = 2
-        set(value) {
-            if (value in 0..100) {
-                field = value
-            }
-        }
 
-    private var channelNumber = 1
-        // set channel number if provided value is within range of 0 to 200
-        set(value) {
-            if (value in 0..200) {
-                field = value
-            }
-        }
+    override val deviceType = "Smart Tv"
+
+    private var speakerVolume by RangeRegulator(initialValue = 2, minValue = 0, maxValue = 100)
+
+    private var channelNumber by RangeRegulator(initialValue = 1, minValue = 0, maxValue = 200)
 
     fun increaseSpeakerVolume() {
         speakerVolume++
         println("Speaker volume increased to $speakerVolume")
     }
 
+    fun decreaseSpeakerVolume(){
+        speakerVolume--
+        println("Speaker volume decreased to $speakerVolume")
+    }
+
     fun nextChannel(){
         channelNumber++
         println("Channel number increased to $channelNumber")
+    }
+
+    fun previousChannel(){
+        channelNumber--
+        println("Channel number reverted to $channelNumber")
     }
 
     override fun turnOn() {
@@ -33,4 +35,11 @@ class SmartTv(deviceName: String, category: String) : SmartDevice(deviceName = d
         super.turnOff()
         println("$deviceName is turned off. Speaker volume is set to $speakerVolume")
     }
+
+    override fun printDeviceInfo() {
+        println("Device Name: $deviceName")
+        println("Category: $category")
+        println("Type: $deviceType")
+    }
+
 }
